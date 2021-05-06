@@ -8,7 +8,7 @@ import glob
 import pickle
 import numpy
 import music21
-from music21 import converter, instrument, note, chord
+from music21 import converter, instrument, note, chord, stream
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Dropout
@@ -60,7 +60,7 @@ def getNotes():
 notes = getNotes()
 
 
-# In[2]:
+# In[49]:
 
 
 
@@ -196,8 +196,8 @@ def generateNotes(model, networkInput, pitchNames, nDiff):
     predictionOutput = []
 
     for _ in range(500):
-    
-        predictionInput = numpy.reshape(pattern, (1, len(pattern)-1))
+      
+        predictionInput = numpy.reshape(pattern, (1, pattern.shape[0], 1))
         predictionInput = predictionInput/float(nDiff)
 
         prediction = model.predict(predictionInput, verbose = 0)
@@ -207,7 +207,7 @@ def generateNotes(model, networkInput, pitchNames, nDiff):
 
         predictionOutput.append(result)
 
-        pattern.append(index)
+        pattern = numpy.append(pattern, index)
 
         pattern = pattern[1:len(pattern)]
 
@@ -258,7 +258,6 @@ def createMidi(predictionOutput):
 
 
 def generate():
-    
     print('Pokrenulo se')
 
     model, networkInput, pitchNames, nDiff = trainNetwork()
@@ -266,28 +265,6 @@ def generate():
     createMidi(predictionOutput)
 
     
-
-
-# In[ ]:
-
-
-generate()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
 
 
 
