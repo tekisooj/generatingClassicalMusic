@@ -54,6 +54,7 @@ def getNotes():
 notes = getNotes()
 
 
+
 def write(output_notes):
     midi_stream = stream.Stream(output_notes)
     midi_stream.write('midi', fp='test_output.mid')
@@ -246,18 +247,49 @@ def createMidi(predictionOutput):
 
     write(outputNotes)
 
+
+#def generate():
+    
+#    print('Pokrenulo se')
+
+#    model, networkInput, pitchNames, nDiff = trainNetwork()
+#    predictionOutput = generateNotes(model, networkInput, pitchNames, nDiff)
+#    createMidi(predictionOutput)
+
+    
+
+
+
     
 print('Pokrenulo se')
 
 model, networkInput, pitchNames, nDiff = trainNetwork()
+
+
+
+print(networkInput.shape)
+
+predictionOutput = generateNotes(model, networkInput, pitchNames, nDiff)
+
+
+
+
+
+
+
+
 prediction = model.predict(predictionInput, verbose = 1)
+
+prediction
+
+
 intToNote = dict((number, note) for number, note in enumerate(pitchNames))
 pattern = []
 for i in range(len(prediction[0])):
     pattern.append(intToNote[i])
     
 print(pattern)
-createMidi(pattern)
 
+createMidi(pattern)
 
 
