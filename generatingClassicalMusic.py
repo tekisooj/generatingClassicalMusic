@@ -1,14 +1,8 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import glob
 import pickle
 import numpy
 import music21
-from music21 import converter, instrument, note, chord, stream
+from music21 import converter, instrument, note, chord
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Dropout
@@ -58,10 +52,6 @@ def getNotes():
 
 
 notes = getNotes()
-
-
-# In[49]:
-
 
 
 def write(output_notes):
@@ -256,15 +246,18 @@ def createMidi(predictionOutput):
 
     write(outputNotes)
 
-
-def generate():
-    print('Pokrenulo se')
-
-    model, networkInput, pitchNames, nDiff = trainNetwork()
-    predictionOutput = generateNotes(model, networkInput, pitchNames, nDiff)
-    createMidi(predictionOutput)
-
     
+print('Pokrenulo se')
+
+model, networkInput, pitchNames, nDiff = trainNetwork()
+prediction = model.predict(predictionInput, verbose = 1)
+intToNote = dict((number, note) for number, note in enumerate(pitchNames))
+pattern = []
+for i in range(len(prediction[0])):
+    pattern.append(intToNote[i])
+    
+print(pattern)
+createMidi(pattern)
 
 
 
