@@ -243,7 +243,7 @@ def createMidi(predictionOutput):
             outputNotes.append(newNote)
 
         # increase offset each iteration so that notes do not stack
-        offset += 0.5
+        offset += numpy.random.uniform(0,1)
 
     write(outputNotes)
 
